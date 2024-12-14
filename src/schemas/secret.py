@@ -25,7 +25,7 @@ class SecretCreate(SecretBase):
     )
 
 
-class SecretCreateDB(SecretBase):
+class SecretCreateDB(SecretCreate):
     secret: bytes
     owner_id: int
 
