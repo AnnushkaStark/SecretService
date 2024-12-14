@@ -25,7 +25,7 @@ class Secret(Base):
     ## Attrs:
         - id: int - идентификатор
         - name: str - название
-        - secret: str - зашифрованные
+        - secret: bytes - зашифрованные
             данные
         - created_at: datetime - когда был создан секрет
         - is_active: bool - активен или нет
@@ -42,7 +42,7 @@ class Secret(Base):
     )
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String, unique=True, index=True)
-    secret: Mapped[str]
+    secret: Mapped[bytes]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
