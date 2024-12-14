@@ -3,7 +3,7 @@ from typing import TypedDict
 
 from api.dependencies.auth import access_security, refresh_security
 from schemas.token import TokenAccessRefresh
-from settings import JWT_REFRESH_TOKEN_EXPIRES
+from constants.jwt_settings import JWT_REFRESH_TOKEN_EXPIRES
 
 
 class TokenSubject(TypedDict):
