@@ -2,13 +2,11 @@ from constants.crud_types import CreateSchemaType, ModelType
 
 from .crud_mixins.base import BaseCRUD
 from .crud_mixins.create import CreateAsync
-from .crud_mixins.delete import DeleteAsync
 
 
 class BaseAsyncCRUD(
     BaseCRUD[ModelType],
     CreateAsync[ModelType, CreateSchemaType],
-    DeleteAsync[ModelType],
 ):
 
     """
