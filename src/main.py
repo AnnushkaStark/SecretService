@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from api.v1.router import api_router as secret_service_router
-from middleware.max_requests import RateLimiterMiddleware
+from middleware import RateLimiterMiddleware
+
 
 app = FastAPI(
     title="SecretService",
@@ -19,7 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(RateLimiterMiddleware(max_requests=600, per_seconds=60))
+app.add_middleware(RateLimiterMiddleware)
+
 
 
 app.include_router(secret_service_router, prefix="/secret_service")
