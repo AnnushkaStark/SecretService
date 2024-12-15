@@ -36,10 +36,11 @@ async def user_without_secrets_fixture(async_session: AsyncSession) -> User:
 async def secret_first_fixture(
     async_session: AsyncSession, user_fixture: User
 ) -> Secret:
+    key = await get_secret_key()
     secret = Secret(
         name="my secret",
-        key=await get_secret_key(),
-        secret=await encrypt_data(data="big big secret"),
+        key=key,
+        secret=await encrypt_data(data="big big secret", key=key),
         owner_id=user_fixture.id,
     )
     async_session.add(secret)
@@ -52,10 +53,11 @@ async def secret_first_fixture(
 async def secret_second_fixture(
     async_session: AsyncSession, user_fixture: User
 ) -> Secret:
+    key = await get_secret_key()
     secret = Secret(
         name="my secret another",
-        key=await get_secret_key(),
-        secret=await encrypt_data(data="big big secret"),
+        key=key,
+        secret=await encrypt_data(data="big big secret", key=key),
         owner_id=user_fixture.id,
     )
     async_session.add(secret)

@@ -40,6 +40,7 @@ async def read_one(db: AsyncSession, db_obj: Secret) -> SecretFullResponse:
     secret = SecretFullResponse(
         id=db_obj.id,
         name=db_obj.name,
+        created_at=db_obj.created_at,
         secret=await decrypt_data(data=db_obj.secret, key=db_obj.key),
     )
     await secret_crud.remove(db=db, obj_id=db_obj.id)

@@ -17,7 +17,6 @@ class SecretCRUD(BaseAsyncCRUD[Secret, SecretBase]):
         statement = select(self.model).where(
             self.model.owner_id == owner_id,
             self.model.id == obj_id,
-            # self.model.is_active.is_(True),
         )
         result = await db.execute(statement)
         return result.scalars().first()
