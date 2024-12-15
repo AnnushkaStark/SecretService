@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.dependencies.auth import get_current_user
 from api.dependencies.database import get_async_db
 from api.filters.secret import SecretFilter
-from crud.search import search_crud_secret
 from crud.secret import secret_crud
 from models import User
 from schemas.secret import (
@@ -16,19 +15,6 @@ from schemas.secret import (
 from services import secret as secret_service
 
 router = APIRouter()
-
-
-@router.get("/search/", response_model=SecretPaginatedResponse)
-async def search_secret(
-    query: str = Query(min_length=2),
-    db: AsyncSession = Depends(get_async_db),
-    current_user: User = Depends(get_current_user),
-    limit: int = 20,
-    skip: int = 0,
-):
-    return await search_crud_secret.get_search_secret_crud_result(
-        db=db, owner_id=current_user.id, query=query, skip=skip, limit=limit
-    )
 
 
 @router.get("/", response_model=SecretPaginatedResponse)
