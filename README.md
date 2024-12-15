@@ -88,7 +88,30 @@ POSTGRES_USER=
 POSTGRES_PASSWORD=
 POSTGRES_DB= 
 ```
+## Запуск проекта 
 
+* Простой запуск 
+```
+docker-compose up -d --build
+```
+
+* Запуск контейнеров в фоновом режиме
+```
+docker-compose up -d --build
+```
+* Запуск миграций 
+```
+docker-compose exec web alembic revision --autogenerate -m "create all"
+```
+* Применить миграции
+```
+docker-compose exec web alembic upgrade head
+```
+* Запуск тестов
+```
+docker-compose exec web pytest
+```
+При запуске, применении миграций и запуске тестов контейнеры должны быть запущены в фоновом режиме
 
 
 
