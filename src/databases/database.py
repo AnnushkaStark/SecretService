@@ -1,10 +1,13 @@
 from typing import AsyncGenerator
 
+from sqlalchemy import Integer
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.sql.sqltypes import ARRAY, String
 
 from config.config import db_settings
 
@@ -27,6 +30,14 @@ async_session = async_sessionmaker(
     class_=AsyncSession,
     expire_on_commit=False,
 )
+
+
+class Base(DeclarativeBase):
+    type_annotation_map = {
+        list: ARRAY,
+        list[str]: ARRAY(String),
+        list[int]: ARRAY(Integer),
+    }
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
