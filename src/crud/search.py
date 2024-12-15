@@ -53,3 +53,6 @@ class SearchSecretCRUD:
             "total": rows[0]["total"] if rows else 0,
             "objects": [r["Secret"] for r in rows],
         }
+ 
+    
+search_crud_secret = SearchSecretCRUD()
