@@ -51,6 +51,11 @@ async def create_secret(
     db: AsyncSession = Depends(get_async_db),
     current_user: User = Depends(get_current_user),
 ):
-    return await secret_service.create(
-        db=db, create_data=secret, owner_id=current_user.id
-    )
+    try:
+        return await secret_service.create(
+            db=db, create_data=secret, owner_id=current_user.id
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+        )
