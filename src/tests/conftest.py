@@ -1,52 +1,48 @@
+import sys
 from typing import Callable, Generator
 
 import pytest_asyncio
 from httpx import AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import NullPool
 
-from databases.database import Base
+from databases.database import Base, async_engine
 from main import app
-from models import *  # noqa: F401, F403
+from models import User
 from utilities.security.security import access_security
 
-from .fixtures import *  # noqa: F401, F403
+from .fixtures import *  # noqa: F403, F401
 
-TEST_DATABASE_URL = "sqlite+aiosqlite:///./secret.db"
-
-engine_test = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
-
-async_session_maker = sessionmaker(
-    engine_test, class_=AsyncSession, expire_on_commit=False
-)
+assert (sys.version_info.major, sys.version_info.minor) == (
+    3,
+    11,
+), "Only Python 3.11 allowed"
 
 
 @pytest_asyncio.fixture
 async def async_session() -> AsyncSession:
     session = sessionmaker(
-        engine_test,
+        async_engine,
         class_=AsyncSession,
         expire_on_commit=False,
     )
-
     async with session() as s:
-        async with engine_test.begin() as conn:
+        async with async_engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
 
         yield s
 
-    async with engine_test.begin() as conn:
+    async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
-    await engine_test.dispose()
+    await async_engine.dispose()
 
 
 @pytest_asyncio.fixture
 async def http_client(
     async_session: AsyncSession,
 ) -> Generator[AsyncClient, None, None]:
-    async with AsyncClient(app=app, base_url="http://127.0.0.1:8000/") as ac:
+    async with AsyncClient(app=app, base_url="http://0.0.0.0:8000") as ac:
         yield ac
 
 

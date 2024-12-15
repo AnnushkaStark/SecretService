@@ -10,7 +10,7 @@ from utilities.security.password_hasher import get_password_hash
 async def user_fixture(async_session: AsyncSession) -> User:
     user = User(
         username="TestUserFirst",
-        email="test_mail1@gamil.com",
+        email="test_mail_1@gamil.com",
         password=get_password_hash("123456789"),
     )
     async_session.add(user)
@@ -23,7 +23,7 @@ async def user_fixture(async_session: AsyncSession) -> User:
 async def user_without_secrets_fixture(async_session: AsyncSession) -> User:
     user = User(
         username="TestUserSecond",
-        email="test_mail2@gamil.com",
+        email="test_mail_2@gamil.com",
         password=get_password_hash("123456789"),
     )
     async_session.add(user)

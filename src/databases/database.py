@@ -1,4 +1,5 @@
 from typing import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -7,13 +8,16 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql.sqltypes import ARRAY, Integer, String
 
-
 SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./secret.db"
 
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=True, pool_pre_ping=True)
+async_engine = create_async_engine(
+    SQLALCHEMY_DATABASE_URL, echo=True, pool_pre_ping=True
+)
 
 
-async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+async_session = async_sessionmaker(
+    async_engine, class_=AsyncSession, expire_on_commit=False
+)
 
 
 class Base(DeclarativeBase):
