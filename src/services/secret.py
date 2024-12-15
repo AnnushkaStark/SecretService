@@ -26,8 +26,13 @@ async def create(
         secret=await encrypt_data(data=create_data.secret, key=key),
         owner_id=owner_id,
     )
-    secret = await secret_crud.create(db=db, create_schema=create_schema)
-    visible_secret = SecretResponse(id=secret.id, name=secret.name)
+    try:
+        secret = await secret_crud.create(db=db, create_schema=create_schema)
+    except Exception as e:
+        raise Exception(str(e))
+    visible_secret = SecretResponse(
+        id=secret.id, name=secret.name, created_at=secret.created_at
+    )
     return visible_secret
 
 
