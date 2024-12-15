@@ -1,16 +1,7 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}
-
-db:
+  db:
     image: postgres:15
     hostname: $POSTGRES_HOST
     ports:
@@ -27,3 +18,22 @@ db:
     volumes:
         - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+
+  task_api:
+    build: ./
+    env_file: ./.env
+    environment:
+      POSTGRES_HOST: db
+    container_name: api
+    ports:
+      - 9999:8000
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+
+volumes:
+  postgres_data:
