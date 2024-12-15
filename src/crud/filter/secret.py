@@ -19,7 +19,7 @@ async def filter_secret(
         select(Secret, func.count().over().label("total"))
         .offset(skip)
         .limit(limit)
-        .where(Secret.owner_id == owner_id, Secret.is_active.is_(True))
+        .where(Secret.owner_id == owner_id)
     )
     if filter.created_at__gte is not None:
         statement = statement.where(
@@ -27,7 +27,7 @@ async def filter_secret(
         )
     if filter.created_at__lte is not None:
         statement = statement.where(
-            func.date(Secret.created_at) >= filter.created_at__gte
+            func.date(Secret.created_at) <= filter.created_at__lte
         )
     result = await db.execute(statement)
     rows = result.mappings().all()
