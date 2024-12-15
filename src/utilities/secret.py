@@ -7,7 +7,7 @@ key = os.getenv("ENCRYPTION_KEY")
 cipher_suite = Fernet(key)
 
 
-async def encrypt_data(data: str) -> str:
+async def encrypt_data(data: str) -> bytes:
     encrypted_data = cipher_suite.encrypt(data.encode())
     return encrypted_data
 
