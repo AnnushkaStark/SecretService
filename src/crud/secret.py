@@ -5,12 +5,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from models import Secret
-from schemas.secret import SecretBase, SecretCreateDB
+from schemas.secret import SecretBase
 
 from .async_crud import BaseAsyncCRUD
 
 
-class SecretCRUD(BaseAsyncCRUD[Secret, SecretBase, SecretCreateDB]):
+class SecretCRUD(BaseAsyncCRUD[Secret, SecretBase]):
     async def get_by_id_and_owner_id(
         self, db: AsyncSession, obj_id: int, owner_id: int
     ) -> Optional[Secret]:

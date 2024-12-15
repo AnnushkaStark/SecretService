@@ -2,7 +2,7 @@ import os
 from datetime import timedelta
 
 from authlib.jose import JoseError
-from dotenv import load_dotenv  # noqa: F401
+from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, Security
 from fastapi_jwt import (
     JwtAccessBearerCookie,
@@ -21,6 +21,8 @@ from crud.user import user_crud
 from databases.database import get_async_session
 from models import User
 from schemas.token import TokenPayload
+
+load_dotenv()
 
 access_security = JwtAccessBearerCookie(
     secret_key=os.getenv("JWT_SECRET_KEY"),
