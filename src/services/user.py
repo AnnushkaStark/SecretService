@@ -19,7 +19,7 @@ async def create(
         db=db, username=create_schema.username
     ):
         raise Exception("Username alredy exsists!")
-    
+
     if exsisted_email := await user_crud.get_by_email(  # noqa: F841
         db=db, email=create_schema.email
     ):

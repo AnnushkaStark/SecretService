@@ -35,15 +35,21 @@ async def create_user(
 async def login(
     login_data: UserLogin, db: AsyncSession = Depends(get_async_db)
 ):
-    if found_user := await user_crud.get_by_username(
+    found_user = await user_crud.get_by_username(
         db=db, username=login_data.username
-    ):
+    )
+    if not found_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Not found"
+        )
+    try:
         return await user_service.login(
             db_obj=found_user, login_data=login_data
         )
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail="Not found"
-    )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+        )
 
 
 @router.post("/refresh/", response_model=TokenAccessRefresh)
