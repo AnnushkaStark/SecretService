@@ -3,9 +3,9 @@ from typing import Sequence
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from models import Secret
 from schemas.secret import SecretPaginatedResponse
 from utilities.search import get_transliterated_value
-from models import Secret
 
 
 class SearchSecretCRUD:
@@ -26,7 +26,7 @@ class SearchSecretCRUD:
         }
         result = await self.get_search_result(**kwargs)
         return result
-    
+
     async def get_search_result(
         self,
         db: AsyncSession,
@@ -38,9 +38,9 @@ class SearchSecretCRUD:
         statement = (
             select(Secret)
             .filter(
-                Secret.owner_id==owner_id,
+                Secret.owner_id == owner_id,
                 Secret.is_active.is_(True),
-                *(Secret.name.ilike(f"%{q}%") for q in query),    
+                *(Secret.name.ilike(f"%{q}%") for q in query),
             )
             .offset(skip)
             .limit(limit)
@@ -53,6 +53,6 @@ class SearchSecretCRUD:
             "total": rows[0]["total"] if rows else 0,
             "objects": [r["Secret"] for r in rows],
         }
- 
-    
+
+
 search_crud_secret = SearchSecretCRUD()
