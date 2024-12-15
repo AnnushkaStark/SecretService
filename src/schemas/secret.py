@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from pydantic import BaseModel, Field
@@ -37,10 +38,12 @@ class SecretCreateDB(SecretCreate):
 class SecretResponse(SecretBase):
     id: int
     name: str
+    created_at: datetime
 
 
 class SecretFullResponse(SecretCreate):
     id: int
+    created_at: datetime
 
 
 class SecretPaginatedResponse(PaginatedResponseBase):
