@@ -11,15 +11,14 @@ from sqlalchemy.sql.sqltypes import ARRAY, String
 
 from config.config import db_settings
 
-SQLALCHEMY_DATABASE_URL = ("postgresql+asyncpg://secret:secret@localhost/secret")
-
-    #"postgresql+asyncpg://"
-    #f"{db_settings.POSTGRES_USER}:"
-   # f"{db_settings.POSTGRES_PASSWORD}@"
-   # f"{db_settings.POSTGRES_HOST}:"
-   # f"{db_settings.POSTGRES_PORT}/"
-   # f"{db_settings.POSTGRES_DB}"
-#)
+SQLALCHEMY_DATABASE_URL = (
+    "postgresql+asyncpg://"
+    f"{db_settings.POSTGRES_USER}:"
+    f"{db_settings.POSTGRES_PASSWORD}@"
+    f"{db_settings.POSTGRES_HOST}:"
+    f"{db_settings.POSTGRES_PORT}/"
+    f"{db_settings.POSTGRES_DB}"
+)
 
 
 async_engine = create_async_engine(
