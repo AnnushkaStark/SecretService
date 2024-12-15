@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
-    Boolean,
     DateTime,
     ForeignKey,
     Integer,
@@ -27,8 +26,8 @@ class Secret(Base):
         - name: str - название
         - secret: bytes - зашифрованные
             данные
+        - key: bytes - ключ к шифру
         - created_at: datetime - когда был создан секрет
-        - is_active: bool - активен или нет
         - owner_id: int - идентификатор
             пользователя который создал секрет
             FK User
@@ -43,10 +42,10 @@ class Secret(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String, unique=True, index=True)
     secret: Mapped[bytes]
+    key: Mapped[bytes]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     owner_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("user.id", ondelete="CASCADE")
     )
