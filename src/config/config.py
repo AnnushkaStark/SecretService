@@ -11,3 +11,6 @@ class DBSettings(BaseSetting):
     POSTGRES_DB: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
+
+
+db_settings = DBSettings()
