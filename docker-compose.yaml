@@ -12,6 +12,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     depends_on:
       - db
+    networks:
+      - app-network
 
   db:
     image: postgres:13
