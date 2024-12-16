@@ -114,7 +114,8 @@ POSTGRES_DB=
     ``
 
 * Установить зависисмости 
-    ```pip install -r requirements.txt
+    ```
+    pip install -r requirements.txt
     ```
 * Проверить наличие директории versions в директории alembic - если ее нет - создать
 
