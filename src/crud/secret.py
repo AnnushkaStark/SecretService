@@ -40,11 +40,5 @@ class SecretCRUD(BaseAsyncCRUD[Secret, SecretBase]):
             "objects": [r["Secret"] for r in rows],
         }
 
-    async def mark_deleted(self, db: AsyncSession, obj: Secret) -> Secret:
-        obj.is_active = False
-        await db.commit()
-        await db.refresh(obj)
-        return obj
-
 
 secret_crud = SecretCRUD(Secret)
