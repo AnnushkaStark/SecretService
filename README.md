@@ -90,30 +90,60 @@ POSTGRES_DB=
 ```
 ## Запуск проекта 
 
-* Простой запуск 
-```
-docker-compose up -d --build
-```
+* Создать файл .env в корневой директории проекта для сохранения переменных окружения
+    ```
+    POSTGRES_HOST = localhost
+    POSTGRES_DB =  db
+    POSTGRES_PORT = 5432
+    POSTGRES_USER = admin
+    POSTGRES_PASSWORD = postgres
+    ```
+* создать виртуальное окружение 
+    ```
+    python -m venv venv
+    ```
+* активировать виртуальное окружение
+    для windows 
+    ```
+    venv/Scripts/activate.ps1
+    ```
 
-* Запуск контейнеров в фоновом режиме
-```
-docker-compose up -d --build
-```
-* Запуск миграций 
-```
-docker-compose exec web alembic revision --autogenerate -m "create all"
-```
+    для linux
+    ```
+    souece venv/bin/activate
+    ``
+
+* Установить зависисмости 
+    ```pip install -r requirements.txt
+    ```
+* Проверить наличие директории versions в директории alembic - если ее нет - создать
+
+* Запустить контейнеры в фоновом режиме 
+  ```
+  docker-compose up -d --build
+  ```
+* Проверить работоспособность эндпойнтов приложения
+   ```
+   cd src
+   pytest
+   ```
+* Сделать стартовую миграцию 
+   ```
+   alembic revision --autogenerate -m "create all"
+   ```
+
 * Применить миграции
+    ```
+    alembic upgrade head
+    ```
+* Остановиить контейнеры (тк с флагом -d они запущены в фоновом режиме)
+
+* Перезапустить приложение
+    ```
+    docker-compose up --build
+
+    ```
+Сваггер будет доступен по адресу 
 ```
-docker-compose exec web alembic upgrade head
+http://127.0.0.1:8000/secret_service/docs
 ```
-* Запуск тестов
-```
-docker-compose exec web pytest
-```
-При запуске, применении миграций и запуске тестов контейнеры должны быть запущены в фоновом режиме
-
-
-
-
-
